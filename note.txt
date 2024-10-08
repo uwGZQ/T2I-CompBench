@@ -1,0 +1,10 @@
+
+gantry run  --allow-dirty \
+        --name t2icomp_image_gen_sd15_color \
+        --task-name t2icomp \
+        --gpus 4 \
+        --budget ai2/prior --workspace ai2/dynabench --priority normal --cluster ai2/*cirrascale* \
+        --conda image.yaml \
+        --pip requirements_img_eval.txt \
+        --venv 'base' \
+        -- bash -c "apt-get update && apt-get install ffmpeg libsm6 libxext6  -y && huggingface-cli login --token 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 && accelerate launch --num_processes=4 GORS_finetune/inference_eval_sd15_acc.py --from_file ../examples/dataset/color_val.txt --outdir /results" 
